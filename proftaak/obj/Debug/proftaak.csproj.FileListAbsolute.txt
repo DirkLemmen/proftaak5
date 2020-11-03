@@ -1,0 +1,15 @@
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\proftaak.csprojAssemblyReference.cache
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\MainWindow.g.cs
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\App.g.cs
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\proftaak_MarkupCompile.cache
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\proftaak_MarkupCompile.lref
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\bin\Debug\proftaak.exe.config
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\bin\Debug\proftaak.exe
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\bin\Debug\proftaak.pdb
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\MainWindow.baml
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\proftaak.g.resources
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\proftaak.Properties.Resources.resources
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\proftaak.csproj.GenerateResource.cache
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\proftaak.csproj.CoreCompileInputs.cache
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\proftaak.exe
+C:\Users\dirkl\OneDrive\Bureaublad\Fontys\Proftaak\proftaak\proftaak\obj\Debug\proftaak.pdb
