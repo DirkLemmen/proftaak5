@@ -32,6 +32,7 @@ bool manualBrightness = false;
 bool isFlickering = false;
 bool showingNewValue = false;
 long long newValueStamp = 0;
+long long flickerStamp = 0;
 char newValueStr[strMaxLen];
 
 void displayText(char* txt) {
@@ -63,6 +64,7 @@ void handlePatternChange() {
 
   if (strcmp(str, "#BLNK") == 0) {
     isFlickering = true;
+    flickerStamp = millis();
   }
   if (strcmp(str, "!BLNK") == 0) {
     isFlickering = false;
@@ -123,16 +125,20 @@ void loop()
     }
   } else {
     if (isFlickering) {
-      LedSign::SetBrightness(0);
+      if (millis() - flickerStamp < 300) {
+        LedSign::SetBrightness(0);        
+      }
+      else if (millis() - flickerStamp >= 300) {
+        LedSign::SetBrightness(brightness);        
+      }
+
+      if (millis() - flickerStamp >= 600) {
+        flickerStamp = millis();       
+      }
+
       for (int row = 0; row < DISPLAY_ROWS; row++)
-          for (int col = 0; col < DISPLAY_COLS; col++)
-            LedSign::Set(col, row, 1);
-      delay(500);
-      LedSign::SetBrightness(brightness);
-      for (int row = 0; row < DISPLAY_ROWS; row++)
-          for (int col = 0; col < DISPLAY_COLS; col++)
-            LedSign::Set(col, row, 1);
-      delay(500);
+        for (int col = 0; col < DISPLAY_COLS; col++)
+          LedSign::Set(col, row, 1);
     } else {
       for (int row = 0; row < DISPLAY_ROWS; row++)
         for (int col = 0; col < DISPLAY_COLS; col++)
