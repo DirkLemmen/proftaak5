@@ -74,6 +74,7 @@ namespace proftaak
                 else
                 {
                     port.Write("!BLNK\n");
+                    isBlinking = false;
                 }
             }
         }
