@@ -19,7 +19,7 @@
             <Button x:Name="btnReset" Content="Reset" Width="75" Click="btnReset_Click" Background="{x:Null}" BorderBrush="White" Foreground="White" BorderThickness="2" FontFamily="Tahoma" IsEnabled="False"/>
             <Button x:Name="btnBlink" Content="Blink" Width="75" Click="btnBlink_Click" Background="{x:Null}" BorderBrush="White" Foreground="White" BorderThickness="2" FontFamily="Tahoma" IsEnabled="False" Margin="0,10,0,0"/>
         </StackPanel>
-        
-        
+
+
     </Grid>
 </Window>

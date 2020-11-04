@@ -61,13 +61,24 @@ namespace proftaak
             conn.lightReset();
         }
 
-
+        DateTime oldStamp = DateTime.Now;
         private void sldIntensity_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            // Change intensity
-            conn.changeIntensity(Convert.ToInt32(sldIntensity.Value));
-            // Delay with 100 MS to prevent sending to much bytes to Arduino
-            Thread.Sleep(100);
+            // Delay with 100 MS to prevent sending to much bytes to Arduino  
+         
+            DateTime dt = DateTime.Now;
+
+            TimeSpan ms = dt.Subtract(oldStamp);
+
+
+            if (ms.TotalMilliseconds > 100)
+            {
+                // Change intensity
+                conn.changeIntensity(Convert.ToInt32(sldIntensity.Value));
+            }
+
+           
+            oldStamp = dt;
         }
 
         private void disableControles()
