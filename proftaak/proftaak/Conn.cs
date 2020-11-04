@@ -69,6 +69,7 @@ namespace proftaak
                 if (!isBlinking)
                 {
                     port.Write("#BLNK\n");
+                    isBlinking = true;
                 }
                 else
                 {
