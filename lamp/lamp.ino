@@ -28,7 +28,8 @@ int strLen = 0;
 char str[strMaxLen];
 
 int brightness = 127;
-bool manualValue = false;
+bool manualBrightness = false;
+bool isFlickering = false;
 bool showingNewValue = false;
 long long newValueStamp = 0;
 char newValueStr[strMaxLen];
@@ -57,31 +58,42 @@ inline void keepBrightnessBetweenBounds() {
   if (brightness < 0) brightness = 0;
 }
 
+void handlePatternChange() {
+  if (str[0] != '!' && str[0] != '#') return;
+
+  if (strcmp(str, "#BLNK") == 0) {
+    isFlickering = true;
+  }
+  if (strcmp(str, "!BLNK") == 0) {
+    isFlickering = false;
+  }
+}
+
 void handleBrightnessChange() {
-  manualValue = true;
-      int newBrightness = fast_atoi(str);
-
-      if (strcmp(str, "-1") == 0) {
-        manualValue = false;
-      }
-      else {
-        brightness = newBrightness;
-        keepBrightnessBetweenBounds();
-
-        newValueStamp = millis();
-        showingNewValue = true;
-
-        int percentage = map(brightness, 0, 127, 0, 100);
-        //sprintf(newValueStr, "%d", percentage);
-        sprintf(newValueStr, "%s", str);
-        LedSign::Clear();
-      }
-
+  if (str[0] == '!' || str[0] == '#') return;
+  
+  manualBrightness = true;
+  int newBrightness = fast_atoi(str);
+  
+  if (strcmp(str, "-1") == 0) {
+    manualBrightness = false;
+  }
+  else {
+    brightness = newBrightness;
+    keepBrightnessBetweenBounds();
+    
+    newValueStamp = millis();
+    showingNewValue = true;
+    
+    int percentage = map(brightness, 0, 127, 0, 100);
+    sprintf(newValueStr, "%d", percentage);
+    LedSign::Clear();
+  }
 }
 
 void loop()
 {      
-  if (!manualValue) {
+  if (!manualBrightness) {
     int ldrVal = analogRead(A3);
     brightness = map(ldrVal, 100, 1000, 127, 0);
     keepBrightnessBetweenBounds();
@@ -91,6 +103,8 @@ void loop()
     char ch = Serial.read();
   
     if (ch == '\n') {
+      handleBrightnessChange();
+      handlePatternChange();
       
       memset(str, 0, strMaxLen);
       strLen = 0;
@@ -108,8 +122,21 @@ void loop()
       showingNewValue = false;
     }
   } else {
-    for (int row = 0; row < DISPLAY_ROWS; row++)
-      for (int col = 0; col < DISPLAY_COLS; col++)
-        LedSign::Set(col, row, 1);
+    if (isFlickering) {
+      LedSign::SetBrightness(0);
+      for (int row = 0; row < DISPLAY_ROWS; row++)
+          for (int col = 0; col < DISPLAY_COLS; col++)
+            LedSign::Set(col, row, 1);
+      delay(500);
+      LedSign::SetBrightness(brightness);
+      for (int row = 0; row < DISPLAY_ROWS; row++)
+          for (int col = 0; col < DISPLAY_COLS; col++)
+            LedSign::Set(col, row, 1);
+      delay(500);
+    } else {
+      for (int row = 0; row < DISPLAY_ROWS; row++)
+        for (int col = 0; col < DISPLAY_COLS; col++)
+          LedSign::Set(col, row, 1);
+    }
   }
 }
