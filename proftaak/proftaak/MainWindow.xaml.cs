@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
+using System.Windows.Threading;
 
 namespace proftaak
 {
@@ -24,10 +25,15 @@ namespace proftaak
     {
         Conn conn = new Conn();
 
+        int startTime;
+        int endTime;
+        int currentTime;
+
         public MainWindow()
         {
             InitializeComponent();
 
+            // Laad poorten in combobox
             string[] ports = SerialPort.GetPortNames();
 
             foreach (string port in ports)
@@ -40,6 +46,12 @@ namespace proftaak
                 }
             }
 
+            // Timer setup
+            DispatcherTimer dt = new DispatcherTimer();
+            dt.Tick += Dt_Tick;
+            dt.Interval = new TimeSpan(0,0,1);
+            dt.Start();
+
         }
 
         private void cbPorts_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -51,7 +63,7 @@ namespace proftaak
 
             if (conn.isConnected == true)
             {
-                enableControls();
+                // code
             }
         }
 
@@ -77,27 +89,52 @@ namespace proftaak
                 conn.changeIntensity(Convert.ToInt32(sldIntensity.Value));
             }
 
-           
             oldStamp = dt;
-        }
-
-        private void disableControles()
-        {
-            btnReset.IsEnabled = false;
-            sldIntensity.IsEnabled = false;
-            btnBlink.IsEnabled = false;
-        }
-
-        private void enableControls()
-        {
-            btnReset.IsEnabled = true;
-            sldIntensity.IsEnabled = true;
-            btnBlink.IsEnabled = true;
         }
 
         private void btnBlink_Click(object sender, RoutedEventArgs e)
         {
             conn.lightBlink();
+        }
+
+        private void tpStart_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            // Get start time
+            DateTime? dtStart = tpStart.Value;
+            if (dtStart.HasValue)
+            {
+                startTime = (int)dtStart.Value.TimeOfDay.TotalMinutes;
+            }
+
+        }
+
+        private void tpEnd_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            // Get end time
+            DateTime? dtEnd = tpEnd.Value;
+            if (dtEnd.HasValue)
+            {
+                endTime =  (int)dtEnd.Value.TimeOfDay.TotalMinutes;
+            }
+        }
+
+        private void Dt_Tick(object sender, EventArgs e)
+        {
+            // Get current time
+            currentTime = (int)Math.Floor(DateTime.Now.TimeOfDay.TotalMinutes);
+
+            // Turn light on or off depending on time
+            if (startTime == currentTime)
+            {
+                conn.lightReset();
+                Console.WriteLine("on");
+            }
+            if (endTime == currentTime)
+            {
+                conn.changeIntensity(0);
+                Console.WriteLine("off");
+
+            }
         }
     }
 }

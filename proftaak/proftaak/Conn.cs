@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace proftaak
 {
@@ -19,7 +20,10 @@ namespace proftaak
         static int old_intensity = 0;
 
        
-
+        /// <summary>
+        /// Try connecting to Arduino trough port
+        /// </summary>
+        /// <param name="selectedPort"></param>
         public void connectToArduino(string selectedPort)
         {
             port = new SerialPort(selectedPort, 9600, Parity.None, 8, StopBits.One);
@@ -39,44 +43,77 @@ namespace proftaak
             }
         }
 
+        /// <summary>
+        /// Reset light 
+        /// </summary>
         public void lightReset()
         {
-            if (isConnected)
+            try
             {
-                port.Write("-1\n");
+                if (isConnected)
+                {
+                    port.Write("-1\n");
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex);
+            }
+            
         }
 
+        /// <summary>
+        /// Change the intensity of the light
+        /// </summary>
+        /// <param name="intensity"></param>
         public void changeIntensity(int intensity)
         {
-            if (intensity == old_intensity)
+            try
             {
-                return;
-            }
+                if (intensity == old_intensity)
+                {
+                    return;
+                }
 
-            if (isConnected)
-            {
-                port.Write(intensity + "\n");
-                Console.WriteLine(intensity);
-                old_intensity = intensity;
+                if (isConnected)
+                {
+                    port.Write(intensity + "\n");
+                    Console.WriteLine(intensity);
+                    old_intensity = intensity;
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex);
+            }
+            
         }
 
+        /// <summary>
+        /// Blink light
+        /// </summary>
         public void lightBlink()
         {
-            if (isConnected)
+            try
             {
-                if (!isBlinking)
+                if (isConnected)
                 {
-                    port.Write("#BLNK\n");
-                    isBlinking = true;
-                }
-                else
-                {
-                    port.Write("!BLNK\n");
-                    isBlinking = false;
+                    if (!isBlinking)
+                    {
+                        port.Write("#BLNK\n");
+                        isBlinking = true;
+                    }
+                    else
+                    {
+                        port.Write("!BLNK\n");
+                        isBlinking = false;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex);
+            }  
         }
     }
 }
